@@ -1,5 +1,9 @@
+mod json_utils;
+use json_utils::{read_json_file, Jwt};
+use std::io::{self, Write};
 use expander_compiler::frontend::*;
 use expander_compiler::frontend::extra::*;
+
 
 declare_circuit!(JWTVerification {
     jwt:[Variable;192*8],
@@ -90,11 +94,15 @@ impl Define<BN254Config> for JWTVerification<Variable>{
 }
 
 fn main() {
-let compile_result=compile(&JWTVerification::default(),
-CompileOptions::default()).unwrap();
+println!("Inputs Reading...");
+let file_name = "input.json";
+// let compile_result=compile(&JWTVerification::default(),
+// CompileOptions::default()).unwrap();
+
+let jwt:Jwt = read_json_file(file_name).unwrap();
 
 
-debug_eval::<BN254Config,_,_,_>(&JWTVerification::default(),&assignment, EmptyHintCaller::new())
+// debug_eval::<BN254Config,_,_,_>(&JWTVerification::default(),&assignment, EmptyHintCaller::new())
 
 }
 
